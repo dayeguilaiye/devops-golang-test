@@ -1,11 +1,32 @@
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  labels:
-    app.kubernetes.io/name: devops-golang-test
-    app.kubernetes.io/managed-by: kustomize
   name: manager-role
 rules:
-- apiGroups: [""]
-  resources: ["pods"]
-  verbs: ["get", "list", "watch"]
+- apiGroups:
+  - myapp.hzy.com
+  resources:
+  - mystates
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - myapp.hzy.com
+  resources:
+  - mystates/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - myapp.hzy.com
+  resources:
+  - mystates/status
+  verbs:
+  - get
+  - patch
+  - update
