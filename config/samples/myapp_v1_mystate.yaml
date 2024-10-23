@@ -1,0 +1,9 @@
+apiVersion: myapp.hzy.com/v1
+kind: MyState
+metadata:
+  labels:
+    app.kubernetes.io/name: devops-golang-test
+    app.kubernetes.io/managed-by: kustomize
+  name: mystate-sample
+spec:
+  # TODO(user): Add fields here
