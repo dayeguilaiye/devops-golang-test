@@ -17,6 +17,7 @@ limitations under the License.
 package v1
 
 import (
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -25,17 +26,57 @@ import (
 
 // MyStateSpec defines the desired state of MyState.
 type MyStateSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// Replicas is the number of pod
+	Replicas int `json:"replicas,omitempty"`
 
-	// Foo is an example field of MyState. Edit mystate_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// Selector is the labels to match pods
+	Selector *metav1.LabelSelector `json:"selector,omitempty"`
+
+	// Template is the template of pod
+	Template v1.PodTemplateSpec `json:"template"`
+
+	// VolumeClaimTemplates is the templates of pvc in pods
+	VolumeClaimTemplates []v1.PersistentVolumeClaim `json:"volumeClaimTemplates,omitempty"`
+
+	// ServiceName is the service who serves pods of this statefulSet
+	ServiceName string `json:"serviceName,omitempty"`
+
+	// todo
+	// UpdateStrategy StatefulSetUpdateStrategy
+
+	// todo
+	// MinReadySeconds int
+
+	Ordinals MyOrdinals `json:"ordinals"`
+}
+
+type MyOrdinals struct {
+	Start int `json:"start"`
 }
 
 // MyStateStatus defines the observed state of MyState.
 type MyStateStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// CurrentRevision is the revision of spec which is not updated yet
+	CurrentRevision string `json:"currentRevision,omitempty"`
+
+	// UpdateRevision is the target revision of spec which is trying to update to
+	UpdateRevision string `json:"updateRevision,omitempty"`
+
+	// Replicas is all pods created by this myState
+	Replicas int `json:"replicas"`
+
+	// Replicas is all ready pods created by this myState
+	ReadyReplicas int `json:"readyReplicas"`
+
+	// CurrentReplicas is pods with currentVersion created by this myState
+	CurrentReplicas int `json:"currentReplicas"`
+
+	// UpdatedReplicas is pods with updateVersion created by this myState
+	UpdatedReplicas int `json:"updatedReplicas"`
+
+	// todo
+	// AvailableReplicas is all available pods created by this myState
+	// AvailableReplicas int `json:"availableReplicas"`
 }
 
 // +kubebuilder:object:root=true
